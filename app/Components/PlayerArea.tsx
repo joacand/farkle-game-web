@@ -45,7 +45,8 @@ export default function PlayerArea({ updateScores, isPlayer }: { updateScores: (
     return (
         <div className="flex flex-col items-center py-3 px-3 gap-3 w-auto h-auto bg-[#cb8903] rounded-md">
             <Dice selectedDice={gameState.selectedDice} diceValues={gameState.diceValues} usedDice={gameState.usedDice} toggleDie={toggleDie} />
-            <Controls onRollAgain={onRollAgain} onEndTurn={onEndTurn} />
+            <Controls onRollAgain={onRollAgain} onEndTurn={onEndTurn}
+                rollAgainDisabled={gameState.selectedDice.length === 0} />
         </div>
     );
 }
