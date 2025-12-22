@@ -12,10 +12,11 @@ Based on the [rules in the Wikipedia entry](https://en.wikipedia.org/wiki/Farkle
 ## To do
 - Implement opponent
 - Implement win and lose conditions
-- Improve UX/UI
 - Add audio (rolling of the dice, etc.)
 - Add dice animation when rolling
-- And more...
+- Add auto-skip if no possible moves exist
+- Add status text or description to user what is happening
+- Add multiple (see below section)
 
 ### Multiplayer
 Basic multiplayer functionality. Needs a backend to handle game sessions. For example Firebase could be used with randomized GUIDs as user IDs to allow anonymous multiplayer. Needs more analysis.
