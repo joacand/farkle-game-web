@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GameState from "./Components/GameState";
 import PlayerArea from "./Components/PlayerArea";
 import Rules from "./Components/Rules";
@@ -15,22 +15,62 @@ export default function Home() {
   const [showStatus, setShowStatus] = useState(false);
   const [statusText, setStatusText] = useState("");
 
-  function updateScores(player: number, computer: number) {
-    if (player === 0 && computer === 0) {
-      status(`Farkle! No points gained this turn.`);
-    } else if (player > 0) {
-      status(`Player gained ${player} points.`);
-    } else {
-      status(`Computer gained ${computer} points.`);
-    }
-    setPlayerScore(current => player + current);
-    setComputerScore(current => computer + current);
-  }
+  const [playersTurn, setPlayersTurn] = useState(true);
 
   function status(text: string) {
     setStatusText(text);
     setShowStatus(true);
   }
+
+  function updateScores(player: number, computer: number) {
+    const turnName = playersTurn ? "Player" : "Computer";
+    if (player === 0 && computer === 0) {
+      status(`Farkle! ${turnName} gained no points gained this turn.`);
+    } else if (player > 0) {
+      status(`${turnName} gained ${player} points.`);
+    } else {
+      status(`${turnName} gained ${computer} points.`);
+    }
+    setPlayerScore(current => player + current);
+    setComputerScore(current => computer + current);
+    setPlayersTurn(current => !current);
+  }
+
+  { /* AI logic, do not read this part of the code... In development. */ }
+  const aiRollAgainRef = useRef<() => void>(undefined);
+  const aiEndTurnRef = useRef<() => void>(undefined);
+  const aiToggleDieRef = useRef<(index: number) => void>(undefined);
+  const wait = (ms: number) => new Promise(res => setTimeout(res, ms));
+  const aiLockRef = useRef(false);
+  const playersTurnRef = useRef(playersTurn);
+  useEffect(() => {
+    playersTurnRef.current = playersTurn;
+  }, [playersTurn]);
+  useEffect(() => {
+    if (playersTurn || aiLockRef.current) { return; }
+    aiLockRef.current = true;
+
+    async function executeAi() {
+      aiToggleDieRef.current?.(0);
+      await wait(1500);
+      if (playersTurnRef.current) { return; }
+      aiToggleDieRef.current?.(1);
+      await wait(1500);
+      if (playersTurnRef.current) { return; }
+      aiRollAgainRef.current?.();
+      await wait(1500);
+      if (playersTurnRef.current) { return; }
+      aiEndTurnRef.current?.();
+
+    }
+
+    executeAi();
+    aiLockRef.current = false;
+
+    // This is a bit hacky since we use this as the dependency. It will not cause problems though due to the IF statement above. Improvement possible.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+  }, [playersTurn]);
+  { /* End AI logic */ }
 
   return (
     <div className="flex flex-col items-center p-5 gap-4 w-full h-screen bg-[#212121] ">
@@ -43,10 +83,16 @@ export default function Home() {
           <Rules />
         </div>
         { /* Main Game */}
-        <div className="flex flex-row justify-center items-end px-8 gap-2 bg-[#a26106] h-full w-full max-w-[1600px] rounded-md">
+        <div className="flex flex-col justify-between  px-8 gap-2 bg-[#a26106] h-full w-full max-w-[1600px] rounded-md">
+          <div className="flex flex-col justify-start items-center p-0 h-auto rounded-md">
+            <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
+              onRollAgainRef={(fn) => (aiRollAgainRef.current = fn)}
+              onEndTurnRef={(fn) => (aiEndTurnRef.current = fn)}
+              toggleDieRef={(fn) => (aiToggleDieRef.current = fn)} />
+          </div>
           <div className="flex flex-col justify-end items-center p-0 h-auto rounded-md">
             {showStatus && <StatusText onClose={() => setShowStatus(false)}>{statusText}</StatusText>}
-            <PlayerArea updateScores={updateScores} isPlayer={true} />
+            <PlayerArea updateScores={updateScores} isPlayer={true} hasTurn={playersTurn} />
           </div>
         </div>
       </div>

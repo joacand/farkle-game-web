@@ -6,7 +6,16 @@ import { useEffect, useReducer } from "react";
 import { initialPlayerGameState } from "../Models/PlayerGameState";
 import { gameReducer } from "../Services/gameReducer";
 
-export default function PlayerArea({ updateScores, isPlayer }: { updateScores: (player: number, computer: number) => void, isPlayer: boolean }) {
+interface PlayerAreaProps {
+    updateScores: (player: number, computer: number) => void;
+    isPlayer: boolean;
+    hasTurn: boolean;
+    onRollAgainRef?: (fn: () => void) => void;
+    onEndTurnRef?: (fn: () => void) => void;
+    toggleDieRef?: (fn: (index: number) => void) => void;
+}
+
+export default function PlayerArea({ updateScores, isPlayer, hasTurn, onRollAgainRef, onEndTurnRef, toggleDieRef }: PlayerAreaProps) {
     const [gameState, dispatch] = useReducer(gameReducer, initialPlayerGameState);
 
     function updateScore(score: number) {
@@ -16,6 +25,14 @@ export default function PlayerArea({ updateScores, isPlayer }: { updateScores: (
             updateScores(0, score);
         }
     }
+
+    // Functions for Computer
+    useEffect(() => {
+        if (onRollAgainRef) onRollAgainRef(onRollAgain);
+        if (onEndTurnRef) onEndTurnRef(onEndTurn);
+        if (toggleDieRef) toggleDieRef(toggleDie);
+    }, []);
+    // End functions for Computer
 
     useEffect(() => {
         if (gameState.result && gameState.result.type === "UPDATE_SCORE") {
@@ -44,9 +61,10 @@ export default function PlayerArea({ updateScores, isPlayer }: { updateScores: (
 
     return (
         <div className="flex flex-col items-center py-3 px-3 gap-3 w-auto h-auto bg-[#cb8903] rounded-md">
-            <Dice selectedDice={gameState.selectedDice} diceValues={gameState.diceValues} usedDice={gameState.usedDice} toggleDie={toggleDie} />
-            <Controls onRollAgain={onRollAgain} onEndTurn={onEndTurn}
-                rollAgainDisabled={gameState.selectedDice.length === 0} />
+            <Dice selectedDice={gameState.selectedDice} diceValues={gameState.diceValues} usedDice={gameState.usedDice} toggleDie={isPlayer ? toggleDie : () => { }} />
+            {isPlayer && <Controls onRollAgain={onRollAgain} onEndTurn={onEndTurn}
+                rollAgainDisabled={!hasTurn || gameState.selectedDice.length === 0}
+                endTurnDisabled={!hasTurn} />}
         </div>
     );
 }
