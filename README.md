@@ -17,6 +17,9 @@ Based on the [rules in the Wikipedia entry](https://en.wikipedia.org/wiki/Farkle
 - Add dice animation when rolling
 - And more...
 
+### Multiplayer
+Basic multiplayer functionality. Needs a backend to handle game sessions. For example Firebase could be used with randomized GUIDs as user IDs to allow anonymous multiplayer. Needs more analysis.
+
 ## Build and Deploy
 Install dependencies:
 ```bash
