@@ -10,13 +10,13 @@ Based on the [rules in the Wikipedia entry](https://en.wikipedia.org/wiki/Farkle
 - Next.js
 
 ## To do
-- Implement opponent
+- Implement more intelligent opponent
 - Implement win and lose conditions
 - Add audio (rolling of the dice, etc.)
 - Add dice animation when rolling
 - Add auto-skip if no possible moves exist
-- Add status text or description to user what is happening
-- Add multiple (see below section)
+- Fix layout for mobile and small screens
+- Add multiplayer (see below section)
 
 ### Multiplayer
 Basic multiplayer functionality. Needs a backend to handle game sessions. For example Firebase could be used with randomized GUIDs as user IDs to allow anonymous multiplayer. Needs more analysis.
