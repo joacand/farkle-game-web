@@ -1,12 +1,23 @@
 # 🎲 Farkle
-Web implementation of the game Farkle.
+Web implementation of the dice game Farkle.
+
+This is the dice game used in Kingdom Come: Deliverance.
+
+Based on the [rules in the Wikipedia entry](https://en.wikipedia.org/wiki/Farkle).
 
 ## Tech Stack
 - React
 - Next.js
 
-## Build and Deploy
+## To do
+- Implement opponent
+- Implement win and lose conditions
+- Improve UX/UI
+- Add audio (rolling of the dice, etc.)
+- Add dice animation when rolling
+- And more...
 
+## Build and Deploy
 Install dependencies:
 ```bash
 npm install

@@ -9,7 +9,7 @@ import Header from "./Components/Header";
 export default function Home() {
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
-  const [targetScore, setTargetScore] = useState(1500);
+  const [targetScore] = useState(1500);
 
   function updateScores(player: number, computer: number) {
     console.log("Updating scores:", player, computer);
