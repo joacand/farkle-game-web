@@ -5,16 +5,31 @@ import GameState from "./Components/GameState";
 import PlayerArea from "./Components/PlayerArea";
 import Rules from "./Components/Rules";
 import Header from "./Components/Header";
+import StatusText from "./Components/StatusText";
 
 export default function Home() {
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
   const [targetScore] = useState(1500);
 
+  const [showStatus, setShowStatus] = useState(false);
+  const [statusText, setStatusText] = useState("");
+
   function updateScores(player: number, computer: number) {
-    console.log("Updating scores:", player, computer);
+    if (player === 0 && computer === 0) {
+      status(`Farkle! No points gained this turn.`);
+    } else if (player > 0) {
+      status(`Player gained ${player} points.`);
+    } else {
+      status(`Computer gained ${computer} points.`);
+    }
     setPlayerScore(current => player + current);
     setComputerScore(current => computer + current);
+  }
+
+  function status(text: string) {
+    setStatusText(text);
+    setShowStatus(true);
   }
 
   return (
@@ -29,7 +44,8 @@ export default function Home() {
         </div>
         { /* Main Game */}
         <div className="flex flex-row justify-center items-end px-8 gap-2 bg-[#a26106] h-full w-full max-w-[1600px] rounded-md">
-          <div className="flex flex-col justify-end items-center p-0 gap-2 w-1/2 max-w-[600px] h-auto rounded-md">
+          <div className="flex flex-col justify-end items-center p-0 h-auto rounded-md">
+            {showStatus && <StatusText onClose={() => setShowStatus(false)}>{statusText}</StatusText>}
             <PlayerArea updateScores={updateScores} isPlayer={true} />
           </div>
         </div>
