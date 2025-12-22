@@ -2,8 +2,7 @@
 
 import { Key } from "react";
 
-
-export default function Die({ value = 1, selected = false, used = false, onClick }: { value: number, selected: boolean, used: boolean, onClick?: () => void }) {
+export default function Die({ value = 1, selected = false, used = false, onClick, size = 94 }: { value: number, selected?: boolean, used?: boolean, onClick?: () => void, size?: number }) {
 
     const dots: Record<number, [number, number][]> = {
         1: [[1, 1]],
@@ -40,16 +39,19 @@ export default function Die({ value = 1, selected = false, used = false, onClick
     };
 
     return (
-        <div className={`w-24 h-24 bg-white border-2 border-black rounded-lg grid grid-cols-3 grid-rows-3 gap-2 p-2 relative
+        <div className={`bg-white border-2 border-black rounded-lg grid grid-cols-3 grid-rows-3 gap-2 p-2 relative
             ${selected ? "ring-4 ring-yellow-400" : ""}
-            ${used ? "ring-4 ring-red-400" : ""}`} onClick={onClick}>
+            ${used ? "ring-4 ring-red-400" : ""}`} onClick={onClick}
+            style={{ width: size, height: size }}>
             {dots[value].map(([row, col]: [number, number], index: Key | null | undefined) => (
                 <div
                     key={index}
-                    className="bg-black rounded-full w-4 h-4 justify-self-center self-center"
+                    className="bg-black rounded-full justify-self-center self-center"
                     style={{
                         gridRowStart: row + 1,
                         gridColumnStart: col + 1,
+                        width: size / 6,
+                        height: size / 6,
                     }}
                 ></div>
             ))}

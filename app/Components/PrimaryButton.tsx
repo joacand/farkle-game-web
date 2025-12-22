@@ -9,9 +9,9 @@ const PrimaryButton: React.FC<ButtonProps> = ({ children, onClick, className, di
     <button
         onClick={onClick}
         disabled={disabled}
-        className={`relative w-[162px] h-[43px] bg-[#3B4856] rounded-[10px] flex items-center justify-center cursor-pointer ${className}`}
+        className={`relative w-[162px] h-[43px] bg-[#fede3e] rounded-[10px] flex items-center justify-center cursor-pointer ${className}`}
     >
-        <span className="font-space-grotesk font-medium text-[20px] leading-[26px] text-center text-[#F5F5F5]">
+        <span className="font-space-grotesk font-medium text-[20px] leading-[26px] text-center text-black">
             {children}
         </span>
     </button>

@@ -1,16 +1,57 @@
+import Die from "./Die";
+
 export default function Rules() {
 
     return (
-        <div className="flex flex-col justify-center items-start p-6 gap-2.5 bg-lime-800 max-w-sm w-full">
-            <h2>Scoring moves:</h2>
-            <p>1: 100p</p>
-            <p>5: 50p</p>
-            <p>1 1 1: 300p</p>
-            <p>2 2 2: 200p</p>
-            <p>3 3 3: 300p</p>
-            <p>4 4 4: 400p</p>
-            <p>5 5 5: 500p</p>
-            <p>6 6 6: 600p</p>
+        <div className="flex flex-col justify-center items-start p-6 gap-2.5 bg-[#a26106] max-w-sm w-full rounded-md ">
+            <h2 className="text-3xl">Rules</h2>
+
+            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 w-full text-xl items-center">
+                <div className="flex gap-1">
+                    <Die value={1} size={35} />
+                </div>
+                <p>100</p>
+                <div className="flex gap-1">
+                    <Die value={5} size={35} />
+                </div>
+                <p>50</p>
+                <div className="flex gap-1">
+                    <Die value={1} size={35} />
+                    <Die value={1} size={35} />
+                    <Die value={1} size={35} />
+                </div>
+                <p>300</p>
+                <div className="flex gap-1">
+                    <Die value={2} size={35} />
+                    <Die value={2} size={35} />
+                    <Die value={2} size={35} />
+                </div>
+                <p>200</p>
+                <div className="flex gap-1">
+                    <Die value={3} size={35} />
+                    <Die value={3} size={35} />
+                    <Die value={3} size={35} />
+                </div>
+                <p>300</p>
+                <div className="flex gap-1">
+                    <Die value={4} size={35} />
+                    <Die value={4} size={35} />
+                    <Die value={4} size={35} />
+                </div>
+                <p>400</p>
+                <div className="flex gap-1">
+                    <Die value={5} size={35} />
+                    <Die value={5} size={35} />
+                    <Die value={5} size={35} />
+                </div>
+                <p>500</p>
+                <div className="flex gap-1">
+                    <Die value={6} size={35} />
+                    <Die value={6} size={35} />
+                    <Die value={6} size={35} />
+                </div>
+                <p>600</p>
+            </div>
         </div>
     );
 }

@@ -18,17 +18,18 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center p-5 gap-4 w-full h-screen bg-[#333750]">
+    <div className="flex flex-col items-center p-5 gap-4 w-full h-screen bg-[#212121] ">
       <Header />
-      <div className="flex flex-row items-center px-4 gap-4 relative w-full h-screen bg-[#333750]">
+      <div className="flex flex-row px-4 p-4 gap-4 relative w-full max-w-[1400px] h-screen bg-[#723e11] rounded-md
+            text-l text-gray-100 tracking-tight">
         { /* Side Bar */}
-        <div className="flex flex-col justify-center items-center gap-2 p-0 w-1/4 max-w-[250px] h-full">
+        <div className="flex flex-col items-center gap-2 p-0 w-1/4 max-w-[250px] h-full bg-[#864c0d] rounded-md">
           <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} />
           <Rules />
         </div>
         { /* Main Game */}
-        <div className="flex flex-row justify-center items-end px-8 gap-2 bg-[rgba(134,87,0,0.28)] h-full w-full max-w-[1600px]">
-          <div className="flex flex-col justify-end items-center p-0 gap-2 w-1/2 max-w-[600px] h-auto">
+        <div className="flex flex-row justify-center items-end px-8 gap-2 bg-[#a26106] h-full w-full max-w-[1600px] rounded-md">
+          <div className="flex flex-col justify-end items-center p-0 gap-2 w-1/2 max-w-[600px] h-auto rounded-md">
             <PlayerArea updateScores={updateScores} isPlayer={true} />
           </div>
         </div>
