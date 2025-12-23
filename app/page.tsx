@@ -83,14 +83,14 @@ export default function Home() {
       <div className="flex flex-row px-4 p-4 gap-4 relative w-full max-w-[1400px] h-screen bg-[#723e11] rounded-md
             text-l text-gray-100 tracking-tight">
         { /* Side Bar */}
-        <div className="flex flex-col items-center gap-2 p-0 w-1/4 max-w-[250px] h-full bg-[#864c0d] rounded-md">
+        <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full bg-[#864c0d] rounded-md">
           <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} />
           <Rules />
           <ApplicationControls />
         </div>
         { /* Main Game */}
-        <div className="flex flex-col justify-between  px-8 gap-2 bg-[#a26106] h-full w-full max-w-[1600px] rounded-md">
-          <div className="flex flex-col justify-start items-center p-0 h-auto rounded-md gap-2">
+        <div className="flex flex-col justify-between px-8 gap-2 bg-[#a26106] w-full max-w-[1600px] rounded-md">
+          <div className="flex flex-col items-center p-0 rounded-md gap-2 overflow-x-auto">
             <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
               onRollAgainRef={(fn) => (aiRollAgainRef.current = fn)}
               onEndTurnRef={(fn) => (aiEndTurnRef.current = fn)}
@@ -98,7 +98,7 @@ export default function Home() {
               onGameStateChange={setAiGameState} />
             {showStatusO && <StatusText onClose={() => setShowStatusO(false)}>{statusTextO}</StatusText>}
           </div>
-          <div className="flex flex-col justify-end items-center p-0 h-auto rounded-md gap-2">
+          <div className="flex flex-col items-center p-0 rounded-md gap-2">
             {showStatusP && <StatusText onClose={() => setShowStatusP(false)}>{statusTextP}</StatusText>}
             <PlayerArea updateScores={updateScores} isPlayer={true} hasTurn={playersTurn} />
           </div>

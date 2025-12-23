@@ -12,7 +12,7 @@ interface ControlsProps {
 export default function Controls({ onRollAgain, onEndTurn, rollAgainDisabled, endTurnDisabled }: ControlsProps) {
 
     return (
-        <div className="flex flex-row justify-center items-center px-3 py-3 gap-3 w-auto h-auto">
+        <div className="flex flex-wrap justify-center py-2 gap-3">
             <PrimaryButton onClick={onRollAgain} disabled={rollAgainDisabled}>Roll again</PrimaryButton>
             <PrimaryButton onClick={onEndTurn} disabled={endTurnDisabled}>End turn</PrimaryButton>
         </div>
