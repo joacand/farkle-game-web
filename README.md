@@ -10,8 +10,6 @@ Based on the [rules in the Wikipedia entry](https://en.wikipedia.org/wiki/Farkle
 - Next.js
 
 ## To do
-- Implement more intelligent opponent
-- Implement win and lose conditions
 - Add audio (rolling of the dice, etc.)
 - Add dice animation when rolling
 - Add auto-skip if no possible moves exist
