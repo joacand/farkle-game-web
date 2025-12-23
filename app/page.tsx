@@ -15,25 +15,32 @@ export default function Home() {
   const [computerScore, setComputerScore] = useState(0);
   const [targetScore] = useState(1500);
 
-  const [showStatus, setShowStatus] = useState(false);
-  const [statusText, setStatusText] = useState("");
+  const [showStatusO, setShowStatusO] = useState(false);
+  const [statusTextO, setStatusTextO] = useState("");
+  const [showStatusP, setShowStatusP] = useState(false);
+  const [statusTextP, setStatusTextP] = useState("");
 
   const [playersTurn, setPlayersTurn] = useState(true);
   const [aiGameState, setAiGameState] = useState<ComputerGameState | null>(null);
 
-  function status(text: string) {
-    setStatusText(text);
-    setShowStatus(true);
+  function status(text: string, player: boolean) {
+    if (player) {
+      setStatusTextP(text);
+      setShowStatusP(true);
+    } else {
+      setStatusTextO(text);
+      setShowStatusO(true);
+    }
   }
 
   function updateScores(player: number, computer: number) {
     const turnName = playersTurn ? "You" : "Opponent";
     if (player === 0 && computer === 0) {
-      status(`Bust!`);
+      status(`Bust!`, playersTurn);
     } else if (player > 0) {
-      status(`${turnName} gained ${player} points.`);
+      status(`${turnName} gained ${player} points.`, playersTurn);
     } else {
-      status(`${turnName} gained ${computer} points.`);
+      status(`${turnName} gained ${computer} points.`, playersTurn);
     }
     const newPlayerScore = playerScore + player;
     const newComputerScore = computerScore + computer;
@@ -47,12 +54,12 @@ export default function Home() {
   function winCondition(playerScore: number, computerScore: number): boolean {
     if (playerScore >= targetScore) {
       playSound("victory.wav")
-      status("Congratulations! You have won the game! 🥳");
+      status("Congratulations! You have won the game! 🥳", true);
       resetGame();
       return true;
     } else if (computerScore >= targetScore) {
       playSound("defeat.wav")
-      status("Opponent has won the game 😔. Better luck next time!");
+      status("Opponent has won the game 😔. Better luck next time!", false);
       resetGame();
       return true;
     }
@@ -83,15 +90,16 @@ export default function Home() {
         </div>
         { /* Main Game */}
         <div className="flex flex-col justify-between  px-8 gap-2 bg-[#a26106] h-full w-full max-w-[1600px] rounded-md">
-          <div className="flex flex-col justify-start items-center p-0 h-auto rounded-md">
+          <div className="flex flex-col justify-start items-center p-0 h-auto rounded-md gap-2">
             <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
               onRollAgainRef={(fn) => (aiRollAgainRef.current = fn)}
               onEndTurnRef={(fn) => (aiEndTurnRef.current = fn)}
               toggleDieRef={(fn) => (aiToggleDieRef.current = fn)}
               onGameStateChange={setAiGameState} />
+            {showStatusO && <StatusText onClose={() => setShowStatusO(false)}>{statusTextO}</StatusText>}
           </div>
-          <div className="flex flex-col justify-end items-center p-0 h-auto rounded-md">
-            {showStatus && <StatusText onClose={() => setShowStatus(false)}>{statusText}</StatusText>}
+          <div className="flex flex-col justify-end items-center p-0 h-auto rounded-md gap-2">
+            {showStatusP && <StatusText onClose={() => setShowStatusP(false)}>{statusTextP}</StatusText>}
             <PlayerArea updateScores={updateScores} isPlayer={true} hasTurn={playersTurn} />
           </div>
         </div>

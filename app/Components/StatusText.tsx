@@ -29,7 +29,7 @@ export default function StatusText({ children, duration = 3000, onClose }: Statu
     if (!visible) return null;
 
     return (
-        <div className={`flex flex-col justify-center items-start bg-green-900 rounded-md p-2 mb-2
+        <div className={`flex flex-col justify-center items-start bg-green-900 rounded-md p-2
                 transition-opacity duration-500 ${fadeOut ? "opacity-0" : "opacity-100"}`}>
             <h2 className="text-2xl">{children}</h2>
         </div>
