@@ -78,7 +78,7 @@ export default function useComputerPlayer(playersTurn: boolean, state: ComputerG
         if (diceLeft === 3) return Math.random() < 0.6;
         if (diceLeft === 2) return Math.random() < 0.35;
         if (diceLeft === 1) return Math.random() < 0.15;
-        return false;
+        return true;
     }
 
     function waitTimeout(min: number, max: number): number {

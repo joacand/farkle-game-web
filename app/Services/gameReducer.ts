@@ -69,6 +69,12 @@ export function gameReducer(state: PlayerGameState, action: PlayerAction): Playe
             };
         }
 
+        // Hot dice scenario, reset used dice if all dice have been used
+        if (newState.usedDice.length === 5) {
+            newState.usedDice = [];
+            newState.diceValues = rollDice(newState.diceValues, [], []);
+        }
+
         return {
             ...newState,
             sessionScore: state.sessionScore + score,
