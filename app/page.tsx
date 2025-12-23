@@ -72,7 +72,7 @@ export default function Home() {
     setPlayersTurn(true);
   }
 
-  function targetChanged(target:number) {
+  function targetChanged(target: number) {
     setTargetScore(target);
     resetGame();
   }
@@ -83,7 +83,7 @@ export default function Home() {
     aiToggleDieRef } = useComputerPlayer(playersTurn, aiGameState);
 
   return (
-    <div className="flex flex-col items-center p-5 gap-4 w-full h-screen bg-[#212121] ">
+    <div className="flex flex-col items-center p-5 gap-4 w-full h-screen bg-[#212121]">
       <Header />
       <div className="flex flex-row px-4 p-4 gap-4 relative w-full max-w-[1400px] h-screen bg-[#723e11] rounded-md
             text-l text-gray-100 tracking-tight">
@@ -94,7 +94,8 @@ export default function Home() {
           <ApplicationControls setTargetScore={targetChanged} />
         </div>
         { /* Main Game */}
-        <div className="flex flex-col justify-between px-8 gap-2 bg-[#a26106] w-full max-w-[1600px] rounded-md">
+        <div className="flex flex-col justify-between px-8 gap-2 bg-[#a26106] w-full max-w-[1600px] rounded-md"
+          style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_PATH || ""}/wood-pattern.png)` }}>
           <div className="flex flex-col items-center p-0 rounded-md gap-2 overflow-x-auto">
             <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
               onRollAgainRef={(fn) => (aiRollAgainRef.current = fn)}
