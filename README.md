@@ -10,9 +10,7 @@ Based on the [rules in the Wikipedia entry](https://en.wikipedia.org/wiki/Farkle
 - Next.js
 
 ## To do
-- Add audio (rolling of the dice, etc.)
 - Add dice animation when rolling
-- Add auto-skip if no possible moves exist
 - Fix layout for mobile and small screens
 - Add multiplayer (see below section)
 
