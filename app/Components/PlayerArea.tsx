@@ -2,7 +2,7 @@
 
 import Dice from "./Dice";
 import Controls from "./Controls";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { initialPlayerGameState } from "../Models/PlayerGameState";
 import { gameReducer } from "../Services/gameReducer";
 import { ComputerGameState } from "../Hooks/useAiPlayer";
@@ -20,6 +20,7 @@ interface PlayerAreaProps {
 
 export default function PlayerArea({ updateScores, isPlayer, hasTurn, onRollAgainRef, onEndTurnRef, toggleDieRef, onGameStateChange }: PlayerAreaProps) {
     const [gameState, dispatch] = useReducer(gameReducer, initialPlayerGameState);
+    const [rollTrigger, setRollTrigger] = useState<number>(0);
 
     function updateScore(score: number) {
         if (score === 0) {
@@ -57,15 +58,22 @@ export default function PlayerArea({ updateScores, isPlayer, hasTurn, onRollAgai
 
     function onRollAgain() {
         playSound("dice{n}.wav", 3);
+        resetAnimationToggle();
         dispatch({ type: 'ROLL_AGAIN' });
     }
 
     function onEndTurn() {
+        resetAnimationToggle();
         dispatch({ type: 'END_TURN' });
     }
 
     function toggleDie(index: number) {
         dispatch({ type: 'TOGGLE_DIE', index });
+    }
+
+    // Hacky: Randomizes a value used to decide if dice should animate (roll)
+    function resetAnimationToggle() {
+        setRollTrigger(Math.floor(Math.random() * 100000) + 1);
     }
 
     useEffect(() => {
@@ -80,7 +88,7 @@ export default function PlayerArea({ updateScores, isPlayer, hasTurn, onRollAgai
 
     return (
         <div className="flex flex-col items-center py-3 px-3 gap-3 bg-[#cb8903] rounded-md">
-            <Dice selectedDice={gameState.selectedDice} diceValues={gameState.diceValues} usedDice={gameState.usedDice} toggleDie={isPlayer ? toggleDie : () => { }} />
+            <Dice selectedDice={gameState.selectedDice} diceValues={gameState.diceValues} usedDice={gameState.usedDice} toggleDie={isPlayer ? toggleDie : () => { }} rollTrigger={rollTrigger} />
             {isPlayer && <Controls onRollAgain={onRollAgain} onEndTurn={onEndTurn}
                 rollAgainDisabled={!hasTurn || gameState.selectedDice.length === 0}
                 endTurnDisabled={!hasTurn} />}

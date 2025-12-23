@@ -24,3 +24,34 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes die-roll {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: blur(0px);
+  }
+
+  25% {
+    transform: scale(0.6) rotate(-145deg);
+    filter: blur(1px);
+  }
+
+  50% {
+    transform: scale(0.5) rotate(145deg);
+    filter: blur(1px);
+  }
+
+  75% {
+    transform: scale(0.6) rotate(-140deg);
+    filter: blur(1px);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: blur(0px);
+  }
+}
+
+.animate-roll {
+  animation: die-roll 0.4s ease-out;
+}

@@ -10,8 +10,6 @@ Based on the [rules in the Wikipedia entry](https://en.wikipedia.org/wiki/Farkle
 - Next.js
 
 ## To do
-- Add dice animation when rolling
-- Fix layout for mobile and small screens
 - Add multiplayer (see below section)
 
 ### Multiplayer
