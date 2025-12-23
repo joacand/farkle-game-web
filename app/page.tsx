@@ -27,15 +27,38 @@ export default function Home() {
   function updateScores(player: number, computer: number) {
     const turnName = playersTurn ? "You" : "Opponent";
     if (player === 0 && computer === 0) {
-      status(`Farkle! ${turnName} gained no points gained this turn.`);
+      status(`Bust! ${turnName} gained no points gained this turn.`);
     } else if (player > 0) {
       status(`${turnName} gained ${player} points.`);
     } else {
       status(`${turnName} gained ${computer} points.`);
     }
-    setPlayerScore(current => player + current);
-    setComputerScore(current => computer + current);
-    setPlayersTurn(current => !current);
+    const newPlayerScore = playerScore + player;
+    const newComputerScore = computerScore + computer;
+    setPlayerScore(newPlayerScore);
+    setComputerScore(newComputerScore);
+    if (!winCondition(newPlayerScore, newComputerScore)) {
+      setPlayersTurn(current => !current);
+    }
+  }
+
+  function winCondition(playerScore: number, computerScore: number): boolean {
+    if (playerScore >= targetScore) {
+      status("Congratulations! You have won the game! 🥳");
+      resetGame();
+      return true;
+    } else if (computerScore >= targetScore) {
+      status("Opponent has won the game 😔. Better luck next time!");
+      resetGame();
+      return true;
+    }
+    return false;
+  }
+
+  function resetGame() {
+    setPlayerScore(0);
+    setComputerScore(0);
+    setPlayersTurn(true);
   }
 
   const {
