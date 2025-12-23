@@ -1,6 +1,33 @@
 export function calculateScore(diceValues: number[], selectedDice: number[]): number {
     const values = diceValues.filter((_, index) => selectedDice.includes(index));
 
+    if (values.length === 6) {
+        const firstValue = values[0];
+        if (values.every(v => v === firstValue)) {
+            if (firstValue === 1) return 300 * 4;
+            return firstValue * 100 * 4;
+        }
+        return 0;
+    }
+
+    if (values.length === 5) {
+        const firstValue = values[0];
+        if (values.every(v => v === firstValue)) {
+            if (firstValue === 1) return 300 * 3;
+            return firstValue * 100 * 3;
+        }
+        return 0;
+    }
+
+    if (values.length === 4) {
+        const firstValue = values[0];
+        if (values.every(v => v === firstValue)) {
+            if (firstValue === 1) return 300 * 2;
+            return firstValue * 100 * 2;
+        }
+        return 0;
+    }
+
     if (values.length === 3) {
         const firstValue = values[0];
         if (values.every(v => v === firstValue)) {

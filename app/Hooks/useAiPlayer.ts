@@ -44,12 +44,39 @@ export default function useComputerPlayer(playersTurn: boolean, state: ComputerG
             if (d.value === 5) { possibleMoves.push([[d.index], 10]); }
         }
 
-        // Three of a kind with 1-1-1 being weighted higher
+        // Six of a kind
         const valueMap = new Map<number, number[]>();
         for (const d of possibleSelections) {
             if (!valueMap.has(d.value)) valueMap.set(d.value, []);
             valueMap.get(d.value)!.push(d.index);
         }
+        for (const [, indexes] of valueMap) {
+            if (indexes.length >= 6) {
+                const move = indexes.slice(0, 5);
+                const weight = 99999999;
+                possibleMoves.push([move, weight]);
+            }
+        }
+
+        // Five of a kind with 1-1-1-1-1 being weighted higher
+        for (const [, indexes] of valueMap) {
+            if (indexes.length >= 5) {
+                const move = indexes.slice(0, 5);
+                const weight = 1600;
+                possibleMoves.push([move, weight]);
+            }
+        }
+
+        // Four of a kind with 1-1-1-1 being weighted higher
+        for (const [, indexes] of valueMap) {
+            if (indexes.length >= 4) {
+                const move = indexes.slice(0, 4);
+                const weight = 700;
+                possibleMoves.push([move, weight]);
+            }
+        }
+
+        // Three of a kind with 1-1-1 being weighted higher
         for (const [value, indexes] of valueMap) {
             if (indexes.length >= 3) {
                 const move = indexes.slice(0, 3);
@@ -74,9 +101,10 @@ export default function useComputerPlayer(playersTurn: boolean, state: ComputerG
     }
 
     function shouldRollAgain(diceLeft: number): boolean {
-        if (diceLeft >= 4) return Math.random() < 0.9;
-        if (diceLeft === 3) return Math.random() < 0.6;
-        if (diceLeft === 2) return Math.random() < 0.35;
+        if (diceLeft >= 5) return Math.random() < 0.9;
+        if (diceLeft === 4) return Math.random() < 0.70;
+        if (diceLeft === 3) return Math.random() < 0.45;
+        if (diceLeft === 2) return Math.random() < 0.25;
         if (diceLeft === 1) return Math.random() < 0.15;
         return true;
     }

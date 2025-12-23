@@ -52,6 +52,7 @@ export default function Rules() {
                 </div>
                 <p>600</p>
             </div>
+            <p>Four or more of a kind is worth double the points of three of a kind.</p>
         </div>
     );
 }

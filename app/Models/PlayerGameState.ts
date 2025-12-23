@@ -11,7 +11,7 @@ export type TurnResult =
     | { type: "UPDATE_SCORE"; points: number };
 
 export const initialPlayerGameState: PlayerGameState = {
-    diceValues: [1, 1, 1, 1, 1],
+    diceValues: [1, 1, 1, 1, 1, 1],
     selectedDice: [],
     usedDice: [],
     sessionScore: 0,

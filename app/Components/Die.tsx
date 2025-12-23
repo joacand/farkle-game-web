@@ -2,7 +2,7 @@
 
 import { Key, useEffect, useState } from "react";
 
-export default function Die({ value = 1, selected = false, used = false, onClick, size = 94, rollTrigger }: { value: number, selected?: boolean, used?: boolean, onClick?: () => void, size?: number, rollTrigger: number }) {
+export default function Die({ value = 1, selected = false, used = false, onClick, size = 94, rollTrigger = 0 }: { value: number, selected?: boolean, used?: boolean, onClick?: () => void, size?: number, rollTrigger?: number }) {
     const [rolling, setRolling] = useState(false);
 
     const dots: Record<number, [number, number][]> = {
