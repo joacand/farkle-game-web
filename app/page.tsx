@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import GameState from "./Components/GameState";
 import PlayerArea from "./Components/PlayerArea";
 import Rules from "./Components/Rules";
 import Header from "./Components/Header";
 import StatusText from "./Components/StatusText";
+import useComputerPlayer, { ComputerGameState } from "./Hooks/useAiPlayer";
 
 export default function Home() {
   const [playerScore, setPlayerScore] = useState(0);
@@ -16,6 +17,7 @@ export default function Home() {
   const [statusText, setStatusText] = useState("");
 
   const [playersTurn, setPlayersTurn] = useState(true);
+  const [aiGameState, setAiGameState] = useState<ComputerGameState | null>(null);
 
   function status(text: string) {
     setStatusText(text);
@@ -23,7 +25,7 @@ export default function Home() {
   }
 
   function updateScores(player: number, computer: number) {
-    const turnName = playersTurn ? "Player" : "Computer";
+    const turnName = playersTurn ? "You" : "Opponent";
     if (player === 0 && computer === 0) {
       status(`Farkle! ${turnName} gained no points gained this turn.`);
     } else if (player > 0) {
@@ -36,41 +38,10 @@ export default function Home() {
     setPlayersTurn(current => !current);
   }
 
-  { /* AI logic, do not read this part of the code... In development. */ }
-  const aiRollAgainRef = useRef<() => void>(undefined);
-  const aiEndTurnRef = useRef<() => void>(undefined);
-  const aiToggleDieRef = useRef<(index: number) => void>(undefined);
-  const wait = (ms: number) => new Promise(res => setTimeout(res, ms));
-  const aiLockRef = useRef(false);
-  const playersTurnRef = useRef(playersTurn);
-  useEffect(() => {
-    playersTurnRef.current = playersTurn;
-  }, [playersTurn]);
-  useEffect(() => {
-    if (playersTurn || aiLockRef.current) { return; }
-    aiLockRef.current = true;
-
-    async function executeAi() {
-      aiToggleDieRef.current?.(0);
-      await wait(1500);
-      if (playersTurnRef.current) { return; }
-      aiToggleDieRef.current?.(1);
-      await wait(1500);
-      if (playersTurnRef.current) { return; }
-      aiRollAgainRef.current?.();
-      await wait(1500);
-      if (playersTurnRef.current) { return; }
-      aiEndTurnRef.current?.();
-
-    }
-
-    executeAi();
-    aiLockRef.current = false;
-
-    // This is a bit hacky since we use this as the dependency. It will not cause problems though due to the IF statement above. Improvement possible.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-  }, [playersTurn]);
-  { /* End AI logic */ }
+  const {
+    aiRollAgainRef,
+    aiEndTurnRef,
+    aiToggleDieRef } = useComputerPlayer(playersTurn, aiGameState);
 
   return (
     <div className="flex flex-col items-center p-5 gap-4 w-full h-screen bg-[#212121] ">
@@ -88,7 +59,8 @@ export default function Home() {
             <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
               onRollAgainRef={(fn) => (aiRollAgainRef.current = fn)}
               onEndTurnRef={(fn) => (aiEndTurnRef.current = fn)}
-              toggleDieRef={(fn) => (aiToggleDieRef.current = fn)} />
+              toggleDieRef={(fn) => (aiToggleDieRef.current = fn)}
+              onGameStateChange={setAiGameState} />
           </div>
           <div className="flex flex-col justify-end items-center p-0 h-auto rounded-md">
             {showStatus && <StatusText onClose={() => setShowStatus(false)}>{statusText}</StatusText>}
