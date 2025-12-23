@@ -13,7 +13,7 @@ import ApplicationControls from "./Components/ApplicationControls";
 export default function Home() {
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
-  const [targetScore] = useState(1500);
+  const [targetScore, setTargetScore] = useState(2500);
 
   const [showStatusO, setShowStatusO] = useState(false);
   const [statusTextO, setStatusTextO] = useState("");
@@ -72,6 +72,11 @@ export default function Home() {
     setPlayersTurn(true);
   }
 
+  function targetChanged(target:number) {
+    setTargetScore(target);
+    resetGame();
+  }
+
   const {
     aiRollAgainRef,
     aiEndTurnRef,
@@ -86,7 +91,7 @@ export default function Home() {
         <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full bg-[#864c0d] rounded-md">
           <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} />
           <Rules />
-          <ApplicationControls />
+          <ApplicationControls setTargetScore={targetChanged} />
         </div>
         { /* Main Game */}
         <div className="flex flex-col justify-between px-8 gap-2 bg-[#a26106] w-full max-w-[1600px] rounded-md">
