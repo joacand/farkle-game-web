@@ -7,6 +7,8 @@ import Rules from "./Components/Rules";
 import Header from "./Components/Header";
 import StatusText from "./Components/StatusText";
 import useComputerPlayer, { ComputerGameState } from "./Hooks/useAiPlayer";
+import { playSound } from "./Services/audioService";
+import ApplicationControls from "./Components/ApplicationControls";
 
 export default function Home() {
   const [playerScore, setPlayerScore] = useState(0);
@@ -27,7 +29,7 @@ export default function Home() {
   function updateScores(player: number, computer: number) {
     const turnName = playersTurn ? "You" : "Opponent";
     if (player === 0 && computer === 0) {
-      status(`Bust! ${turnName} gained no points gained this turn.`);
+      status(`Bust!`);
     } else if (player > 0) {
       status(`${turnName} gained ${player} points.`);
     } else {
@@ -44,10 +46,12 @@ export default function Home() {
 
   function winCondition(playerScore: number, computerScore: number): boolean {
     if (playerScore >= targetScore) {
+      playSound("victory.wav")
       status("Congratulations! You have won the game! 🥳");
       resetGame();
       return true;
     } else if (computerScore >= targetScore) {
+      playSound("defeat.wav")
       status("Opponent has won the game 😔. Better luck next time!");
       resetGame();
       return true;
@@ -75,6 +79,7 @@ export default function Home() {
         <div className="flex flex-col items-center gap-2 p-0 w-1/4 max-w-[250px] h-full bg-[#864c0d] rounded-md">
           <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} />
           <Rules />
+          <ApplicationControls />
         </div>
         { /* Main Game */}
         <div className="flex flex-col justify-between  px-8 gap-2 bg-[#a26106] h-full w-full max-w-[1600px] rounded-md">

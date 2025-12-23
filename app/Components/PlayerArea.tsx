@@ -6,6 +6,7 @@ import { useEffect, useReducer } from "react";
 import { initialPlayerGameState } from "../Models/PlayerGameState";
 import { gameReducer } from "../Services/gameReducer";
 import { ComputerGameState } from "../Hooks/useAiPlayer";
+import { playSound } from "../Services/audioService";
 
 interface PlayerAreaProps {
     updateScores: (player: number, computer: number) => void;
@@ -21,6 +22,11 @@ export default function PlayerArea({ updateScores, isPlayer, hasTurn, onRollAgai
     const [gameState, dispatch] = useReducer(gameReducer, initialPlayerGameState);
 
     function updateScore(score: number) {
+        if (score === 0) {
+            playSound("bust.wav");
+        } else {
+            playSound("points.wav");
+        }
         if (isPlayer) {
             updateScores(score, 0);
         } else {
@@ -50,6 +56,7 @@ export default function PlayerArea({ updateScores, isPlayer, hasTurn, onRollAgai
     }, []);
 
     function onRollAgain() {
+        playSound("dice{n}.wav", 3);
         dispatch({ type: 'ROLL_AGAIN' });
     }
 
