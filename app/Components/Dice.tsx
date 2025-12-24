@@ -2,7 +2,8 @@
 
 import Die from "./Die";
 
-export default function Dice({ selectedDice = [], diceValues = [], usedDice = [], toggleDie, rollTrigger }: { selectedDice: number[], diceValues: number[], usedDice: number[], toggleDie: (index: number) => void, rollTrigger: number }) {
+export default function Dice({ selectedDice = [], diceValues = [], usedDice = [], toggleDie, visible = true, rollTrigger }:
+    { selectedDice: number[], diceValues: number[], usedDice: number[], toggleDie: (index: number) => void, visible: boolean, rollTrigger: number }) {
 
     return (
         <div className="flex flex-row flex-wrap justify-center items-center py-2 gap-3">
@@ -13,6 +14,7 @@ export default function Dice({ selectedDice = [], diceValues = [], usedDice = []
                     selected={selectedDice.includes(index)}
                     used={usedDice.includes(index)}
                     onClick={() => toggleDie(index)}
+                    visible={visible}
                     rollTrigger={rollTrigger} />
             ))}
         </div>
