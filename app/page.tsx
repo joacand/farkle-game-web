@@ -4,7 +4,6 @@ import { useState } from "react";
 import GameState from "./Components/GameState";
 import PlayerArea from "./Components/PlayerArea";
 import Rules from "./Components/Rules";
-import Header from "./Components/Header";
 import StatusText from "./Components/StatusText";
 import useComputerPlayer, { ComputerGameState } from "./Hooks/useAiPlayer";
 import { playSound } from "./Services/audioService";
@@ -83,33 +82,29 @@ export default function Home() {
     aiToggleDieRef } = useComputerPlayer(playersTurn, aiGameState);
 
   return (
-    <div className="flex flex-col items-center p-5 gap-4 w-full h-screen bg-[#212121]">
-      <Header />
-      <div className="flex flex-row px-4 p-4 gap-4 relative w-full max-w-[1400px] h-screen bg-[#723e11] rounded-md
-            text-l text-gray-100 tracking-tight">
-        { /* Side Bar */}
-        <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full bg-[#864c0d] rounded-md">
-          <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} />
-          <Rules />
-          <ApplicationControls setTargetScore={targetChanged} />
+    <>
+      { /* Side Bar */}
+      <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md">
+        <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} />
+        <Rules />
+        <ApplicationControls setTargetScore={targetChanged} />
+      </div>
+      { /* Main Game */}
+      <div className="flex flex-col justify-between px-8 gap-2 w-full max-w-[1600px] rounded-md"
+        style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_PATH || ""}/wood-pattern.png)` }}>
+        <div className="flex flex-col items-center p-0 rounded-md gap-2 overflow-x-auto">
+          <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
+            onRollAgainRef={(fn) => (aiRollAgainRef.current = fn)}
+            onEndTurnRef={(fn) => (aiEndTurnRef.current = fn)}
+            toggleDieRef={(fn) => (aiToggleDieRef.current = fn)}
+            onGameStateChange={setAiGameState} />
+          {showStatusO && <StatusText onClose={() => setShowStatusO(false)}>{statusTextO}</StatusText>}
         </div>
-        { /* Main Game */}
-        <div className="flex flex-col justify-between px-8 gap-2 bg-[#a26106] w-full max-w-[1600px] rounded-md"
-          style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_PATH || ""}/wood-pattern.png)` }}>
-          <div className="flex flex-col items-center p-0 rounded-md gap-2 overflow-x-auto">
-            <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
-              onRollAgainRef={(fn) => (aiRollAgainRef.current = fn)}
-              onEndTurnRef={(fn) => (aiEndTurnRef.current = fn)}
-              toggleDieRef={(fn) => (aiToggleDieRef.current = fn)}
-              onGameStateChange={setAiGameState} />
-            {showStatusO && <StatusText onClose={() => setShowStatusO(false)}>{statusTextO}</StatusText>}
-          </div>
-          <div className="flex flex-col items-center p-0 rounded-md gap-2">
-            {showStatusP && <StatusText onClose={() => setShowStatusP(false)}>{statusTextP}</StatusText>}
-            <PlayerArea updateScores={updateScores} isPlayer={true} hasTurn={playersTurn} />
-          </div>
+        <div className="flex flex-col items-center p-0 rounded-md gap-2">
+          {showStatusP && <StatusText onClose={() => setShowStatusP(false)}>{statusTextP}</StatusText>}
+          <PlayerArea updateScores={updateScores} isPlayer={true} hasTurn={playersTurn} />
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -3,7 +3,7 @@
 import { Key, useEffect, useState } from "react";
 
 export default function Die({ value = 1, selected = false, used = false, onClick, size = 94, visible = true, rollTrigger = 0 }:
-    { value: number, selected?: boolean, used?: boolean, onClick?: () => void, size?: number, visible: boolean, rollTrigger?: number }) {
+    { value: number, selected?: boolean, used?: boolean, onClick?: () => void, size?: number, visible?: boolean, rollTrigger?: number }) {
 
     const [rolling, setRolling] = useState(false);
 

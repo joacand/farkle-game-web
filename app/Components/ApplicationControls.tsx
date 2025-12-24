@@ -60,6 +60,7 @@ export default function ApplicationControls({ setTargetScore }: ApplicationContr
                 </div>
                 <PrimaryButton onClick={changeTarget}>Change target</PrimaryButton>
             </div>
+            <PrimaryButton href="/about">About</PrimaryButton>
         </div >
     );
 }
