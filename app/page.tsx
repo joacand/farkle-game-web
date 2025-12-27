@@ -8,6 +8,7 @@ import StatusText from "./Components/StatusText";
 import useComputerPlayer, { ComputerGameState } from "./Hooks/useAiPlayer";
 import { playSound } from "./Services/audioService";
 import ApplicationControls from "./Components/ApplicationControls";
+import Multiplayer from "./Components/Multiplayer";
 
 export default function Home() {
   const [playerScore, setPlayerScore] = useState(0);
@@ -82,7 +83,7 @@ export default function Home() {
     aiToggleDieRef } = useComputerPlayer(playersTurn, aiGameState);
 
   return (
-    <>
+    <Multiplayer multiplayer={true}>
       { /* Side Bar */}
       <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md">
         <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} />
@@ -105,6 +106,6 @@ export default function Home() {
           <PlayerArea updateScores={updateScores} isPlayer={true} hasTurn={playersTurn} />
         </div>
       </div>
-    </>
+    </Multiplayer>
   );
 }
