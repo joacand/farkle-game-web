@@ -11,19 +11,21 @@ export default function StatusText({ children, duration = 3000, onClose }: Statu
     const [fadeOut, setFadeOut] = useState(false);
 
     useEffect(() => {
-        const fadeTimer = setTimeout(() => {
-            setFadeOut(true);
-        }, duration - 500);
+        if (duration > 0) {
+            const fadeTimer = setTimeout(() => {
+                setFadeOut(true);
+            }, duration - 500);
 
-        const removeTimer = setTimeout(() => {
-            setVisible(false);
-            if (onClose) onClose();
-        }, duration);
+            const removeTimer = setTimeout(() => {
+                setVisible(false);
+                if (onClose) onClose();
+            }, duration);
 
-        return () => {
-            clearTimeout(fadeTimer);
-            clearTimeout(removeTimer);
-        };
+            return () => {
+                clearTimeout(fadeTimer);
+                clearTimeout(removeTimer);
+            };
+        }
     }, [duration, onClose]);
 
     if (!visible) return null;

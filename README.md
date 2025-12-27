@@ -1,21 +1,29 @@
 # 🎲 Farkle
-Web implementation of the dice game Farkle.
+A web-based implementation of the dice game **Farkle**, featured in *Kingdom Come: Deliverance*.
 
-This is the dice game used in Kingdom Come: Deliverance.
+The game follows the rules outlined in the [Wikipedia Farkle article](https://en.wikipedia.org/wiki/Farkle) and includes optional multiplayer support.
 
-Based on the [rules in the Wikipedia entry](https://en.wikipedia.org/wiki/Farkle).
+## ⭐ Features
+* Playable single-player against computer
+* Real-time multiplayer using Firebase
+* Static-build friendly (suitable for GitHub Pages or similar hosting)
 
-## Tech Stack
+## 🧰 Tech Stack
 - React
 - Next.js
+- Firebase (multiplayer)
 
-## To do
-- Add multiplayer (see below section)
+## 🌐 Multiplayer Notes
+The implementation contains basic multiplayer functionality through Firebase. Please keep the following in mind:
 
-### Multiplayer
-Basic multiplayer functionality. Needs a backend to handle game sessions. For example Firebase could be used with randomized GUIDs as user IDs to allow anonymous multiplayer. Needs more analysis.
+* No anti-cheat protection: Players with technical knowledge can submit fake scores.
+* Target setting is not synced: Both players must manually set the same Target value.
+* Inactive lobbies expire: Lobbies are automatically removed after 10 minutes of inactivity.
 
-## Build and Deploy
+## 📝 To do
+* Add multiplayer animations to visualize opponent dice actions in real time
+
+## 🚀 Build and Deploy
 Install dependencies:
 ```bash
 npm install
@@ -42,5 +50,5 @@ NEXT_PUBLIC_ASSET_PREFIX="/sub-path"
 
 You can also have environment-specific files such as `.env.development.local` for local development.
 
-## Live Demo
-You can see the application in action [here](https://joacimandersson.com/farkle/).
+## 🔗 Live Demo
+Try the game here: https://joacimandersson.com/farkle/
