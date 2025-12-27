@@ -8,18 +8,7 @@ import { useRouter } from "next/navigation";
 import { v4 as uuid } from 'uuid'
 import { collection, deleteDoc, doc, getDocs, runTransaction, setDoc } from "firebase/firestore";
 import StatusText from "../Components/StatusText";
-
-interface PlayerData {
-    score: number;
-    lastSeen: Date;
-}
-
-interface LobbyData {
-    players: Record<string, PlayerData>;
-    turn: string;
-    createdAt: Date;
-    expiresAt: Date;
-}
+import LobbyData from "../Models/LobbyData";
 
 export default function Multiplayer({ }) {
     const EXPIRE_THRESHOLD_MS = 10 * 60 * 1000;
@@ -28,13 +17,6 @@ export default function Multiplayer({ }) {
     const [lobbyId, setLobbyId] = useState("");
     const [showStatus, setShowStatus] = useState(false);
     const [statusText, setStatusText] = useState("");
-    const [showResult, setShowResult] = useState(false);
-    const [resultText, setResultText] = useState("");
-
-    function result(text: string) {
-        setResultText(text);
-        setShowResult(true);
-    }
 
     function status(text: string) {
         setStatusText(text);
@@ -122,7 +104,8 @@ export default function Multiplayer({ }) {
                 });
             });
 
-            router.push("/");
+            const params = new URLSearchParams({ lobbyId });
+            router.push(`/multiplayer/lobby?${params.toString()}`);
         } catch (error) {
             status(`Failed to join lobby: ${error}`);
         }
@@ -149,7 +132,8 @@ export default function Multiplayer({ }) {
                 expiresAt: new Date(Date.now() + EXPIRE_THRESHOLD_MS)
             });
 
-            result(`Lobby created with ID: ${lobbyId}`);
+            const params = new URLSearchParams({ lobbyId });
+            router.push(`/multiplayer/lobby?${params.toString()}`);
 
             await cleanUpExpiredLobbies();
         } catch (error) {
@@ -168,7 +152,6 @@ export default function Multiplayer({ }) {
                 <PrimaryButton onClick={createLobby}>Create new lobby</PrimaryButton>
                 <PrimaryButton href="/">Cancel</PrimaryButton>
                 {showStatus && <StatusText onClose={() => setShowStatus(false)}>{statusText}</StatusText>}
-                {showResult && <StatusText onClose={() => { }} duration={0}>{resultText}</StatusText>}
             </div>
         </>
     );
