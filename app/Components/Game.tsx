@@ -146,7 +146,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
     return (
         <>
             { /* Side Bar */}
-            <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md">
+            <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md overflow-y-auto">
                 {lobbyId !== "" &&
                     <div>
                         <p>Lobby:</p>
