@@ -10,8 +10,9 @@ import { collection, deleteDoc, doc, getDocs, runTransaction, setDoc } from "fir
 import StatusText from "../Components/StatusText";
 import LobbyData from "../Models/LobbyData";
 
+export const EXPIRE_THRESHOLD_MS = 10 * 60 * 1000;
+
 export default function Multiplayer({ }) {
-    const EXPIRE_THRESHOLD_MS = 10 * 60 * 1000;
     const router = useRouter();
 
     const [lobbyId, setLobbyId] = useState("");
@@ -148,7 +149,7 @@ export default function Multiplayer({ }) {
                 <p>Enter an existing lobby ID and click <strong>Join</strong>, or create a new lobby.
                     After creating a lobby, the lobby ID will appear in the top-left corner.</p>
                 <input className="w-md px-2 py-0 rounded-md bg-orange-100 text-orange-900 placeholder-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
-                    defaultValue={lobbyId} onChange={e => setLobbyId(e.target.value)} placeholder="Enter lobby identifier here..."/>
+                    defaultValue={lobbyId} onChange={e => setLobbyId(e.target.value)} placeholder="Enter lobby identifier here..." />
                 <PrimaryButton onClick={joinLobby}>Join lobby</PrimaryButton>
                 <PrimaryButton onClick={createLobby}>Create lobby</PrimaryButton>
                 <PrimaryButton href="/">Cancel</PrimaryButton>

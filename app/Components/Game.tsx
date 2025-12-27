@@ -11,6 +11,7 @@ import StatusText from "./StatusText";
 import useLobby from "../Hooks/useLobby";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../Services/firebase";
+import { EXPIRE_THRESHOLD_MS } from "../multiplayer/page";
 
 interface GameProps {
     playerId?: string;
@@ -107,7 +108,8 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
             await updateDoc(lobbyRef, {
                 [`players.${uid}.score`]: newPlayerScore,
                 [`players.${uid}.lastSeen`]: new Date(),
-                "turn": playerId
+                "turn": playerId,
+                "expiresAt": new Date(Date.now() + EXPIRE_THRESHOLD_MS)
             });
         }
     }
