@@ -149,12 +149,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
         <>
             { /* Side Bar */}
             <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md overflow-y-auto">
-                {lobbyId !== "" &&
-                    <div>
-                        <p>Lobby:</p>
-                        <p>{lobbyId}</p>
-                    </div >}
-                <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} />
+                <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} lobbyId={lobbyId} />
                 <Rules />
                 <ApplicationControls setTargetScore={targetChanged} />
             </div>

@@ -55,3 +55,8 @@ body {
 .animate-roll {
   animation: die-roll 0.4s ease-out;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
