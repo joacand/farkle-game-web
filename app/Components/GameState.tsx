@@ -1,8 +1,10 @@
 "use client";
 
+import TextLayout from "./TextLayout";
+
 export default function GameState({ playerScore, computerScore, targetScore, lobbyId = "" }: { playerScore: number, computerScore: number, targetScore: number, lobbyId?: string }) {
     return (
-        <div className="flex flex-col justify-center items-start p-6 gap-1 bg-[#a26106] max-w-sm w-full rounded-md text-xl">
+        <TextLayout>
             {lobbyId && <div>
                 <p className="text-m">Lobby:</p>
                 <p className="text-xs cursor-pointer select-all text-orange-200 hover:text-orange-400"
@@ -15,6 +17,6 @@ export default function GameState({ playerScore, computerScore, targetScore, lob
             <hr className="border-t border-gray-200 my-1 h-px w-full" />
             <p className="text-2xl">Target: {targetScore}</p>
 
-        </div>
+        </TextLayout>
     );
 }

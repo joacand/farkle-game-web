@@ -3,10 +3,12 @@ import LobbyData from "../Models/LobbyData";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../Services/firebase";
 
-export default function useLobby(lobbyId: string) {
+export default function useLobby(lobbyId: string, enabled: boolean) {
     const [lobbyData, setLobbyData] = useState<LobbyData | null>(null);
 
     useEffect(() => {
+        if (!enabled || !lobbyId) { return; }
+
         const lobbyRef = doc(db, "lobbies", lobbyId);
 
         const unsubscribe = onSnapshot(lobbyRef, (docSnap) => {
@@ -18,7 +20,7 @@ export default function useLobby(lobbyId: string) {
         });
 
         return unsubscribe;
-    }, [lobbyId])
+    }, [enabled, lobbyId])
 
     return lobbyData;
 }

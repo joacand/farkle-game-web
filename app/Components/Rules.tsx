@@ -1,9 +1,10 @@
 import Die from "./Die";
+import TextLayout from "./TextLayout";
 
 export default function Rules() {
 
     return (
-        <div className="flex flex-col justify-center items-start p-6 gap-2.5 bg-[#a26106] max-w-sm w-full rounded-md ">
+        <TextLayout>
             <h2 className="text-3xl">Rules</h2>
 
             <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 w-full text-xl items-center">
@@ -53,6 +54,6 @@ export default function Rules() {
                 <p>600</p>
             </div>
             <p>Four or more of a kind is worth double the points of three of a kind.</p>
-        </div>
+        </TextLayout>
     );
 }

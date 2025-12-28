@@ -11,7 +11,7 @@ import StatusText from "./StatusText";
 import useLobby from "../Hooks/useLobby";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../Services/firebase";
-import { EXPIRE_THRESHOLD_MS } from "../multiplayer/page";
+import { EXPIRE_THRESHOLD_MS } from "../Services/lobbyService";
 
 interface GameProps {
     playerId?: string;
@@ -33,7 +33,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
 
     if (lobbyId !== "") {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const lobbyData = useLobby(lobbyId);
+        const lobbyData = useLobby(lobbyId, lobbyId !== "");
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
