@@ -39,6 +39,15 @@ export async function joinLobby(user: typeof auth.currentUser | null, lobbyId: s
 export async function createLobby(user: typeof auth.currentUser | null): Promise<string> {
     if (!user) { throw new Error("User is not signed in"); }
 
+    let target = 2500;
+    const targetFromStorage = localStorage.getItem("farkle.target");
+    if (targetFromStorage != null) {
+        const parsedInt = parseInt(targetFromStorage, 10);
+        if (!isNaN(parsedInt) && parsedInt < 100001) {
+            target = parsedInt;
+        }
+    }
+
     const uid = user.uid;
 
     const lobbyId = uuid();
@@ -52,6 +61,7 @@ export async function createLobby(user: typeof auth.currentUser | null): Promise
             }
         },
         turn: uid,
+        target,
         createdAt: new Date(),
         expiresAt: new Date(Date.now() + EXPIRE_THRESHOLD_MS)
     });

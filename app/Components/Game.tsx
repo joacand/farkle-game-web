@@ -39,6 +39,8 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
         useEffect(() => {
             if (!lobbyData) { return; }
 
+            setTargetScore(lobbyData.target);
+
             const player = playerId ? lobbyData.players[playerId] : null;
             const otherPlayerId = Object.keys(lobbyData.players).find(id => id !== playerId);
             const otherPlayer = otherPlayerId ? lobbyData.players[otherPlayerId] : null;
