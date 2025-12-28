@@ -33,7 +33,9 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
     const [aiGameState, setAiGameState] = useState<ComputerGameState | null>(null);
     const [waitingForPlayer, setWaitingForPlayer] = useState(false);
 
-    const lobbyData = useLobby(lobbyId, lobbyId !== "");
+    function isMultiplayer(): boolean { return lobbyId !== ""; }
+
+    const lobbyData = useLobby(lobbyId, isMultiplayer());
 
     function status(text: string, player: boolean) {
         if (player) {
@@ -59,11 +61,11 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
     }
 
     async function resetGame() {
-        setPlayerScore(0);
-        setComputerScore(0);
-        setPlayersTurn(true);
-
-        if (lobbyId !== "") {
+        if (!isMultiplayer()) {
+            setPlayerScore(0);
+            setComputerScore(0);
+            setPlayersTurn(true);
+        } else {
             const uid = auth.currentUser?.uid;
             const lobbyRef = doc(db, "lobbies", lobbyId);
             await updateDoc(lobbyRef, {
@@ -91,7 +93,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
     }
 
     useEffect(() => {
-        if (lobbyId === "" || !lobbyData) { return; }
+        if (!isMultiplayer() || !lobbyData) { return; }
 
         setTargetScore(lobbyData.target);
 
@@ -129,7 +131,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
         const newPlayerScore = playerScore + player;
         const newComputerScore = computerScore + computer;
 
-        if (lobbyId === "") {
+        if (!isMultiplayer()) {
             setPlayerScore(newPlayerScore);
             setComputerScore(newComputerScore);
             if (!winCondition(newPlayerScore, newComputerScore)) {
@@ -163,16 +165,16 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
             <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md overflow-y-auto">
                 <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} lobbyId={lobbyId} waitingForPlayer={waitingForPlayer} />
                 <Rules />
-                <ApplicationControls setTargetScore={targetChanged} canSetTarget={lobbyId === ""} />
+                <ApplicationControls setTargetScore={targetChanged} canSetTarget={!isMultiplayer()} />
             </div>
             { /* Main Game */}
             <div className="flex flex-col justify-between px-8 gap-2 w-full max-w-[1600px] rounded-md"
                 style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_PATH || ""}/wood-pattern.png)` }}>
                 <div className="flex flex-col items-center p-0 rounded-md gap-2 overflow-x-auto">
                     <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
-                        onRollAgainRef={lobbyId === "" ? (fn) => (aiRollAgainRef.current = fn) : () => { }}
-                        onEndTurnRef={lobbyId === "" ? (fn) => (aiEndTurnRef.current = fn) : () => { }}
-                        toggleDieRef={lobbyId === "" ? (fn) => (aiToggleDieRef.current = fn) : () => { }}
+                        onRollAgainRef={!isMultiplayer() ? (fn) => (aiRollAgainRef.current = fn) : () => { }}
+                        onEndTurnRef={!isMultiplayer() ? (fn) => (aiEndTurnRef.current = fn) : () => { }}
+                        toggleDieRef={!isMultiplayer() ? (fn) => (aiToggleDieRef.current = fn) : () => { }}
                         onGameStateChange={setAiGameState} />
                     {showStatusO && <StatusText onClose={() => setShowStatusO(false)}>{statusTextO}</StatusText>}
                 </div>
