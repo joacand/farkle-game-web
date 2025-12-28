@@ -46,7 +46,7 @@ export default function Multiplayer({ }) {
 
     return (
         <BasePage>
-            <h2 className="text-3xl">Multiplayer</h2>
+            <h1 className="text-3xl">Multiplayer</h1>
             <p>Enter an existing lobby ID and click <strong>Join</strong>, or create a new lobby.
                 After creating a lobby, the lobby ID will appear in the top-left corner. You can share the resulting lobby link to invite another player.</p>
             <input className="w-md px-2 py-0 rounded-md bg-orange-100 text-orange-900 placeholder-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
