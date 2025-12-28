@@ -31,6 +31,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
 
     const [playersTurn, setPlayersTurn] = useState(true);
     const [aiGameState, setAiGameState] = useState<ComputerGameState | null>(null);
+    const [waitingForPlayer, setWaitingForPlayer] = useState(false);
 
     if (lobbyId !== "") {
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -45,6 +46,8 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
             const player = playerId ? lobbyData.players[playerId] : null;
             const otherPlayerId = Object.keys(lobbyData.players).find(id => id !== playerId);
             const otherPlayer = otherPlayerId ? lobbyData.players[otherPlayerId] : null;
+
+            setWaitingForPlayer(otherPlayer === null);
 
             if (lobbyData.turn !== playerId) {
                 // Turn was changed to us. Update data from user
@@ -152,7 +155,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
         <>
             { /* Side Bar */}
             <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md overflow-y-auto">
-                <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} lobbyId={lobbyId} />
+                <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} lobbyId={lobbyId} waitingForPlayer={waitingForPlayer} />
                 <Rules />
                 <ApplicationControls setTargetScore={targetChanged} />
             </div>

@@ -30,7 +30,7 @@ export default function LobbyContent() {
     }, [user, lobbyId, lobbyData])
 
     if (!lobbyData || !user?.uid || loading) {
-        return <p>Loading lobby...</p>;
+        return <BasePage>Loading lobby...</BasePage>;
     }
 
     const playerIds = Object.keys(lobbyData.players);
