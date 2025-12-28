@@ -7,9 +7,10 @@ import { DEFAULT_TARGET } from "../Services/gameService";
 
 interface ApplicationControlsProps {
     setTargetScore: (target: number) => void;
+    canSetTarget: boolean;
 }
 
-export default function ApplicationControls({ setTargetScore }: ApplicationControlsProps) {
+export default function ApplicationControls({ setTargetScore, canSetTarget }: ApplicationControlsProps) {
     const [audioMuted, setAudioMuted] = useState(false);
     const [audioText, setAudioText] = useState<string>("🔇 Mute");
     const [target, setTarget] = useState<string>(DEFAULT_TARGET.toString());
@@ -45,22 +46,22 @@ export default function ApplicationControls({ setTargetScore }: ApplicationContr
     function changeTarget() {
         const parsedInt = parseInt(target, 10);
         if (!isNaN(parsedInt) && parsedInt < 100001) {
-            setTargetScore(parsedInt);
             localStorage.setItem("farkle.target", parsedInt.toString());
+            setTargetScore(parsedInt);
         }
     }
 
     return (
         <div className="flex flex-col justify-center items-start p-6 gap-4 bg-[#a26106] max-w-sm w-full rounded-md">
             <PrimaryButton onClick={onAudioClick}>{audioText}</PrimaryButton>
-            <div className="flex flex-col gap-1">
+            {canSetTarget && <div className="flex flex-col gap-1">
                 <div className="flex flex-row gap-2">
                     <p className="text-white font-medium">Target </p>
                     <input className="w-24 px-2 py-0 rounded-md bg-orange-100 text-orange-900 placeholder-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
                         defaultValue={target} onChange={e => setTarget(e.target.value)} />
                 </div>
                 <PrimaryButton onClick={changeTarget}>Change target</PrimaryButton>
-            </div>
+            </div>}
             <PrimaryButton href="/about">About</PrimaryButton>
             <PrimaryButton href="/multiplayer">Multiplayer</PrimaryButton>
         </div >

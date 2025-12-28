@@ -33,38 +33,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
     const [aiGameState, setAiGameState] = useState<ComputerGameState | null>(null);
     const [waitingForPlayer, setWaitingForPlayer] = useState(false);
 
-    if (lobbyId !== "") {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const lobbyData = useLobby(lobbyId, lobbyId !== "");
-
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useEffect(() => {
-            if (!lobbyData) { return; }
-
-            setTargetScore(lobbyData.target);
-
-            const player = playerId ? lobbyData.players[playerId] : null;
-            const otherPlayerId = Object.keys(lobbyData.players).find(id => id !== playerId);
-            const otherPlayer = otherPlayerId ? lobbyData.players[otherPlayerId] : null;
-
-            setWaitingForPlayer(otherPlayer === null);
-
-            if (lobbyData.turn !== playerId) {
-                // Turn was changed to us. Update data from user
-                const otherPlayerId = Object.keys(lobbyData.players).find(id => id !== playerId);
-                const otherPlayer = otherPlayerId ? lobbyData.players[otherPlayerId] : null;
-                updateScoresMp(otherPlayer?.score ?? 0);
-            } else {
-                // Our state change, we already know this
-            }
-
-            setPlayerScore(player?.score ?? 0);
-            setComputerScore(otherPlayer?.score ?? 0);
-            if (!winCondition(player?.score ?? 0, otherPlayer?.score ?? 0)) {
-                setPlayersTurn(lobbyData.turn !== playerId);
-            }
-        }, [lobbyData]);
-    }
+    const lobbyData = useLobby(lobbyId, lobbyId !== "");
 
     function status(text: string, player: boolean) {
         if (player) {
@@ -88,6 +57,64 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
         }
         setComputerScore(totalNewScore);
     }
+
+    async function resetGame() {
+        setPlayerScore(0);
+        setComputerScore(0);
+        setPlayersTurn(true);
+
+        if (lobbyId !== "") {
+            const uid = auth.currentUser?.uid;
+            const lobbyRef = doc(db, "lobbies", lobbyId);
+            await updateDoc(lobbyRef, {
+                [`players.${uid}.score`]: 0,
+                [`players.${uid}.lastSeen`]: new Date(),
+                "turn": playerId,
+                "expiresAt": new Date(Date.now() + EXPIRE_THRESHOLD_MS)
+            });
+        }
+    }
+
+    function winCondition(playerScore: number, computerScore: number): boolean {
+        if (playerScore >= targetScore) {
+            playSound("victory.wav")
+            status("Congratulations! You have won the game! 🥳", true);
+            resetGame();
+            return true;
+        } else if (computerScore >= targetScore) {
+            playSound("defeat.wav")
+            status("Opponent has won the game 😔. Better luck next time!", false);
+            resetGame();
+            return true;
+        }
+        return false;
+    }
+
+    useEffect(() => {
+        if (lobbyId === "" || !lobbyData) { return; }
+
+        setTargetScore(lobbyData.target);
+
+        const player = playerId ? lobbyData.players[playerId] : null;
+        const otherPlayerId = Object.keys(lobbyData.players).find(id => id !== playerId);
+        const otherPlayer = otherPlayerId ? lobbyData.players[otherPlayerId] : null;
+
+        setWaitingForPlayer(otherPlayer === null);
+
+        if (lobbyData.turn !== playerId) {
+            // Turn was changed to us. Update data from user
+            const otherPlayerId = Object.keys(lobbyData.players).find(id => id !== playerId);
+            const otherPlayer = otherPlayerId ? lobbyData.players[otherPlayerId] : null;
+            updateScoresMp(otherPlayer?.score ?? 0);
+        }
+
+        setPlayerScore(player?.score ?? 0);
+        setComputerScore(otherPlayer?.score ?? 0);
+        if (!winCondition(player?.score ?? 0, otherPlayer?.score ?? 0)) {
+            setPlayersTurn(lobbyData.turn !== playerId);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lobbyData, lobbyId, playerId]);
 
     async function updateScores(player: number, computer: number) {
         const turnName = playersTurn ? "You" : "Opponent";
@@ -120,38 +147,6 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
         }
     }
 
-    function winCondition(playerScore: number, computerScore: number): boolean {
-        if (playerScore >= targetScore) {
-            playSound("victory.wav")
-            status("Congratulations! You have won the game! 🥳", true);
-            resetGame();
-            return true;
-        } else if (computerScore >= targetScore) {
-            playSound("defeat.wav")
-            status("Opponent has won the game 😔. Better luck next time!", false);
-            resetGame();
-            return true;
-        }
-        return false;
-    }
-
-    async function resetGame() {
-        setPlayerScore(0);
-        setComputerScore(0);
-        setPlayersTurn(true);
-
-        if (lobbyId !== "") {
-            const uid = auth.currentUser?.uid;
-            const lobbyRef = doc(db, "lobbies", lobbyId);
-            await updateDoc(lobbyRef, {
-                [`players.${uid}.score`]: 0,
-                [`players.${uid}.lastSeen`]: new Date(),
-                "turn": playerId,
-                "expiresAt": new Date(Date.now() + EXPIRE_THRESHOLD_MS)
-            });
-        }
-    }
-
     function targetChanged(target: number) {
         setTargetScore(target);
         resetGame();
@@ -168,7 +163,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
             <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md overflow-y-auto">
                 <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} lobbyId={lobbyId} waitingForPlayer={waitingForPlayer} />
                 <Rules />
-                <ApplicationControls setTargetScore={targetChanged} />
+                <ApplicationControls setTargetScore={targetChanged} canSetTarget={lobbyId === ""} />
             </div>
             { /* Main Game */}
             <div className="flex flex-col justify-between px-8 gap-2 w-full max-w-[1600px] rounded-md"
