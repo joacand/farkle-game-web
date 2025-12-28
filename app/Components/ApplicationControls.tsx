@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PrimaryButton from "./PrimaryButton";
 import { setMuted } from "../Services/audioService";
+import { DEFAULT_TARGET } from "../Services/gameService";
 
 interface ApplicationControlsProps {
     setTargetScore: (target: number) => void;
@@ -11,7 +12,7 @@ interface ApplicationControlsProps {
 export default function ApplicationControls({ setTargetScore }: ApplicationControlsProps) {
     const [audioMuted, setAudioMuted] = useState(false);
     const [audioText, setAudioText] = useState<string>("🔇 Mute");
-    const [target, setTarget] = useState<string>("2500");
+    const [target, setTarget] = useState<string>(DEFAULT_TARGET.toString());
 
     function mute(muted: boolean) {
         setMuted(muted);

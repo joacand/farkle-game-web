@@ -51,3 +51,5 @@ export function rollDice(diceValues: number[], selectedDice: number[], usedDice:
         return Math.floor(Math.random() * 6) + 1;
     });
 }
+
+export const DEFAULT_TARGET = 2500;

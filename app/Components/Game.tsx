@@ -12,6 +12,7 @@ import useLobby from "../Hooks/useLobby";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../Services/firebase";
 import { EXPIRE_THRESHOLD_MS } from "../Services/lobbyService";
+import { DEFAULT_TARGET } from "../Services/gameService";
 
 interface GameProps {
     playerId?: string;
@@ -21,7 +22,7 @@ interface GameProps {
 export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
     const [playerScore, setPlayerScore] = useState(0);
     const [computerScore, setComputerScore] = useState(0);
-    const [targetScore, setTargetScore] = useState(2500);
+    const [targetScore, setTargetScore] = useState(DEFAULT_TARGET);
 
     const [showStatusO, setShowStatusO] = useState(false);
     const [statusTextO, setStatusTextO] = useState("");

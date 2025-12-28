@@ -2,6 +2,7 @@ import { collection, deleteDoc, doc, getDocs, runTransaction, setDoc } from "fir
 import { auth, db } from "./firebase";
 import LobbyData from "../Models/LobbyData";
 import { v4 as uuid } from 'uuid'
+import { DEFAULT_TARGET } from "./gameService";
 
 export const EXPIRE_THRESHOLD_MS = 10 * 60 * 1000;
 
@@ -39,7 +40,7 @@ export async function joinLobby(user: typeof auth.currentUser | null, lobbyId: s
 export async function createLobby(user: typeof auth.currentUser | null): Promise<string> {
     if (!user) { throw new Error("User is not signed in"); }
 
-    let target = 2500;
+    let target = DEFAULT_TARGET;
     const targetFromStorage = localStorage.getItem("farkle.target");
     if (targetFromStorage != null) {
         const parsedInt = parseInt(targetFromStorage, 10);
