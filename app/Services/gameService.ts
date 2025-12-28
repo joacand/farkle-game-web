@@ -1,48 +1,43 @@
-export function calculateScore(diceValues: number[], selectedDice: number[]): number {
+export function calculateScore(diceValues: number[], selectedDice: number[]): { score: number, valid: boolean } {
     const values = diceValues.filter((_, index) => selectedDice.includes(index));
 
-    if (values.length === 6) {
-        const firstValue = values[0];
-        if (values.every(v => v === firstValue)) {
-            if (firstValue === 1) return 300 * 4;
-            return firstValue * 100 * 4;
+    const counts: Record<number, number> = {};
+    for (const v of values) {
+        counts[v] = (counts[v] || 0) + 1;
+    }
+
+    let score = 0;
+
+    for (let die = 1; die <= 6; die++) {
+        const count = counts[die] || 0;
+
+        if (count >= 6) {
+            score += die === 1 ? 300 * 4 : die * 100 * 4;
+            counts[die] -= 6;
+        } else if (count === 5) {
+            score += die === 1 ? 300 * 3 : die * 100 * 3;
+            counts[die] -= 5;
+        } else if (count === 4) {
+            score += die === 1 ? 300 * 2 : die * 100 * 2;
+            counts[die] -= 4;
+        } else if (count === 3) {
+            score += die === 1 ? 300 : die * 100;
+            counts[die] -= 3;
         }
-        return 0;
     }
 
-    if (values.length === 5) {
-        const firstValue = values[0];
-        if (values.every(v => v === firstValue)) {
-            if (firstValue === 1) return 300 * 3;
-            return firstValue * 100 * 3;
-        }
-        return 0;
+    if ((counts[1] || 0) > 0) {
+        score += counts[1] * 100;
+        counts[1] = 0;
+    }
+    if ((counts[5] || 0) > 0) {
+        score += counts[5] * 50;
+        counts[5] = 0;
     }
 
-    if (values.length === 4) {
-        const firstValue = values[0];
-        if (values.every(v => v === firstValue)) {
-            if (firstValue === 1) return 300 * 2;
-            return firstValue * 100 * 2;
-        }
-        return 0;
-    }
+    const valid = !Object.values(counts).some(x => x > 0);
 
-    if (values.length === 3) {
-        const firstValue = values[0];
-        if (values.every(v => v === firstValue)) {
-            if (firstValue === 1) return 300;
-            return firstValue * 100;
-        }
-        return 0;
-    }
-
-    if (values.length === 1) {
-        if (values.includes(1)) return 100;
-        if (values.includes(5)) return 50;
-    }
-
-    return 0;
+    return { score, valid }
 }
 
 export function rollDice(diceValues: number[], selectedDice: number[], usedDice: number[]): number[] {

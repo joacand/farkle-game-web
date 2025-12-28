@@ -127,8 +127,8 @@ export function gameReducer(state: PlayerGameState, action: PlayerAction): Playe
     }
 
     function checkScores(state: PlayerGameState): [number, PlayerGameState] {
-        const score = calculateScore(state.diceValues, state.selectedDice);
-        if (score === 0) {
+        const { score, valid } = calculateScore(state.diceValues, state.selectedDice);
+        if (score === 0 || !valid) {
             return [0, { ...state }];
         } else {
             return [score,
