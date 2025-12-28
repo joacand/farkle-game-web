@@ -162,13 +162,13 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
     return (
         <>
             { /* Side Bar */}
-            <div className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md overflow-y-auto">
+            <nav className="flex flex-col items-center gap-2 p-0 w-[250px] h-full rounded-md overflow-y-auto" aria-label="Game controls and information">
                 <GameState playerScore={playerScore} computerScore={computerScore} targetScore={targetScore} lobbyId={lobbyId} waitingForPlayer={waitingForPlayer} />
                 <Rules />
                 <ApplicationControls setTargetScore={targetChanged} canSetTarget={!isMultiplayer()} />
-            </div>
+            </nav>
             { /* Main Game */}
-            <div className="flex flex-col justify-between px-8 gap-2 w-full max-w-[1600px] rounded-md"
+            <main className="flex flex-col justify-between px-8 gap-2 w-full max-w-[1600px] rounded-md"
                 style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_PATH || ""}/wood-pattern.png)` }}>
                 <div className="flex flex-col items-center p-0 rounded-md gap-2 overflow-x-auto">
                     <PlayerArea updateScores={updateScores} isPlayer={false} hasTurn={!playersTurn}
@@ -182,7 +182,7 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
                     {showStatusP && <StatusText onClose={() => setShowStatusP(false)}>{statusTextP}</StatusText>}
                     <PlayerArea updateScores={updateScores} isPlayer={true} hasTurn={playersTurn} />
                 </div>
-            </div>
+            </main>
         </>
     );
 }

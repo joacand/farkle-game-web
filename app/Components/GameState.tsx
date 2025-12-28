@@ -14,7 +14,7 @@ export default function GameState({ playerScore, computerScore, targetScore, lob
     return (
         <TextLayout>
             {lobbyId && <div>
-                <p className="text-m">Lobby</p>
+                <h2 className="text-m">Lobby</h2>
                 <p className="text-xs cursor-pointer select-all text-orange-200 hover:text-orange-400"
                     onClick={() => navigator.clipboard.writeText(lobbyId)}
                     title="Click to copy">{lobbyId}</p>
@@ -25,7 +25,6 @@ export default function GameState({ playerScore, computerScore, targetScore, lob
             <p>Opponent: {computerScore}</p>
             <hr className="border-t border-gray-200 my-1 h-px w-full" />
             <p className="text-2xl">Target: {targetScore}</p>
-
         </TextLayout>
     );
 }

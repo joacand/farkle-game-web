@@ -15,8 +15,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Farkle",
-  description: "Farkle game.",
+  title: "Farkle Dice Game",
+  description: "Play Farkle, the dice game featured in Kingdom Come: Deliverance. Single-player and multiplayer support.",
+  keywords: [
+    "Farkle",
+    "dice game",
+    "Kingdom Come Deliverance",
+    "online Farkle",
+    "play Farkle online",
+    "dice game online",
+    "single player",
+    "multiplayer"
+  ],
+  authors: [{ name: "joacand" }],
+  robots: "index, follow",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
