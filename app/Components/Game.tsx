@@ -135,10 +135,21 @@ export default function Home({ playerId = "", lobbyId = "" }: GameProps) {
         return false;
     }
 
-    function resetGame() {
+    async function resetGame() {
         setPlayerScore(0);
         setComputerScore(0);
         setPlayersTurn(true);
+
+        if (lobbyId !== "") {
+            const uid = auth.currentUser?.uid;
+            const lobbyRef = doc(db, "lobbies", lobbyId);
+            await updateDoc(lobbyRef, {
+                [`players.${uid}.score`]: 0,
+                [`players.${uid}.lastSeen`]: new Date(),
+                "turn": playerId,
+                "expiresAt": new Date(Date.now() + EXPIRE_THRESHOLD_MS)
+            });
+        }
     }
 
     function targetChanged(target: number) {
