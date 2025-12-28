@@ -17,7 +17,6 @@ The game follows the rules outlined in the [Wikipedia Farkle article](https://en
 The implementation contains basic multiplayer functionality through Firebase. Please keep the following in mind:
 
 * No anti-cheat protection: Players with technical knowledge can submit fake scores.
-* Target setting is not synced: Both players must manually set the same Target value.
 * Inactive lobbies expire: Lobbies are automatically removed after 10 minutes of inactivity.
 
 ## To do
