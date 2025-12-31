@@ -23,9 +23,10 @@ export default function Die({ value = 1, selected = false, used = false, onClick
         return () => clearTimeout(timer);
     }, [rollTrigger]);
 
+    const styleSize = size === 94 ? `clamp(62px, 8vw, 94px)` : size;
     const dieStyle = {
-        width: size,
-        height: size,
+        width: styleSize,
+        height: styleSize,
         background: "radial-gradient(circle at 35% 35%, #ffffff 0%, #e2e8f0 80%, #cbd5e1 100%)",
     };
 
@@ -34,7 +35,7 @@ export default function Die({ value = 1, selected = false, used = false, onClick
     }
 
     return (
-        <div className={`bg-white border-2 border-black rounded-lg grid grid-cols-3 grid-rows-3 gap-2 p-2 relative
+        <div className={`bg-white border-2 border-black rounded-lg grid grid-cols-3 grid-rows-3 gap-2 p-2 relative 
             ${selected ? "ring-4 ring-yellow-300" : ""}
             ${used ? "ring-4 ring-red-500" : ""}
             ${rolling && !used && !selected ? "animate-roll" : ""}
